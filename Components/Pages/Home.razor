@@ -1,0 +1,39 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+
+<PageTitle>Home</PageTitle>
+
+@inject ConsoleCommandService Cmd
+
+<h3>Enviar comando para console</h3>
+
+<input @bind="clientId" placeholder="clientId (ex: console-app)" />
+<input @bind="payload" placeholder="payload (ex: restart-service)" />
+
+<button @onclick="Enviar">Enviar</button>
+
+<p><b>Status:</b> @status</p>
+<p><b>Resposta:</b> @resposta</p>
+
+@code {
+    string clientId = "console-app";
+    string payload = "ping-local";
+    string status = "";
+    string resposta = "";
+
+    private async Task Enviar()
+    {
+        status = "Enviando...";
+        resposta = "";
+
+        var (ok, result) = await Cmd.SendAsync(
+            clientId,
+            payload,
+            timeout: TimeSpan.FromSeconds(20));
+
+        status = ok ? "OK" : "ERRO";
+        resposta = result;
+    }
+}

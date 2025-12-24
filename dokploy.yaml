@@ -1,0 +1,7 @@
+﻿app:
+  name: blazor-agente-remoto-goodbom
+  type: dockerfile
+  dockerfile:
+    path: Dockerfile
+    context: .
+  port: 80
