@@ -13,7 +13,7 @@ namespace AgenteRemotoGoodbom
 
         public async Task<(bool ok, string result)> SendAsync(
             string clientId,
-            string payload,
+            ExecuteCommandPayload payload,
             TimeSpan timeout,
             CancellationToken ct = default)
         {

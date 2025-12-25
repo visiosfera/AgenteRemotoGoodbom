@@ -10,8 +10,12 @@
 
 <h3>Enviar comando para console</h3>
 
-<input @bind="clientId" placeholder="clientId (ex: console-app)" />
-<input @bind="payload" placeholder="payload (ex: restart-service)" />
+<div>
+    <input @bind="message" placeholder="digite uma mensagem" />
+</div>
+
+<input disabled @bind="clientId" placeholder="clientId (ex: console-app)" />
+<input disabled @bind="payload" placeholder="payload (ex: restart-service)" />
 
 <button @onclick="Enviar">Enviar</button>
 
@@ -19,6 +23,8 @@
 <p><b>Resposta:</b> @resposta</p>
 
 @code {
+    string message = string.Empty;
+
     string clientId = "console-app";
     string payload = "ping-local";
     string status = "";
@@ -31,7 +37,13 @@
 
         var (ok, result) = await Cmd.SendAsync(
             clientId,
-            payload,
+            new ExecuteCommandPayload
+            {
+                Action = "restart-service",
+                Arguments = "nginx",
+                TimeoutSeconds = 10,
+                Message = message
+            },
             timeout: TimeSpan.FromSeconds(20));
 
         status = ok ? "OK" : "ERRO";
